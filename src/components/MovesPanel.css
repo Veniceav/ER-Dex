@@ -1,0 +1,143 @@
+.movesContainer {
+  height: 100%;
+  width: 75%;
+  border-radius: 20px;
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 1);
+  overflow: hidden;
+  background-color: #191919;
+
+  .movesHeader {
+    display: flex;
+    flex-direction: column;
+    height: 15%;
+    width: 100%;
+    padding: 1rem 0 1rem 1rem;
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.9);
+    margin-bottom: 1rem;
+  }
+
+  .moveSetTitle {
+    height: 60%;
+    width: 100%;
+    text-align: left;
+    font-size: 2rem;
+    font-weight: 300;
+  }
+
+  .learnType {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 40%;
+    width: 100%;
+
+    .moveTab {
+      border: none;
+      font-size: 1.2rem;
+      font-weight: 400;
+      width: 15%;
+      height: 40%;
+      color: #f5f5f5;
+
+      &:hover {
+        cursor: pointer;
+        color: #cacaca;
+        text-decoration: underline;
+        text-underline-offset: 0.2rem;
+      }
+    }
+  }
+
+  .moveTableContainer {
+    display: flex;
+    border-top: 1px solid black;
+    height: 70%;
+    width: 100%;
+
+    .tableContent {
+      vertical-align: middle;
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      height: 100%;
+      overflow: scroll;
+      scrollbar-color: #535353 transparent;
+      scroll-behavior: smooth;
+      scrollbar-width: thin;
+
+      tr:nth-child(even) {
+        background-color: #1f1f1f;
+      }
+
+      tr {
+        display: table-row;
+        padding-left: 1rem;
+        text-align: left;
+        display: flex;
+        line-height: 2.5rem;
+        width: 100%;
+        max-height: 2.5rem;
+        min-height: 2.5rem;
+        justify-content: space-around;
+        border-bottom: 1px solid black;
+
+        th {
+          font-weight: 500;
+          font-size: 1.1rem;
+        }
+
+        td {
+          font-size: 1rem;
+          font-weight: 400;
+        }
+
+        .nameCol {
+          width: 140px;
+          font-weight: bold;
+        }
+
+        .levelCol {
+          text-align: center;
+          width: 5%;
+        }
+
+        .typeCol {
+          width: 5%;
+        }
+
+        .splitCol {
+          position: relative;
+          text-align: center;
+          width: 5%;
+
+          img {
+            image-rendering: pixelated;
+            position: absolute;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            height: 1.5em;
+            width: 1.5em;
+          }
+        }
+
+        .powerCol {
+          width: 5%;
+          text-align: center;
+        }
+
+        .accuracyCol {
+          width: 5%;
+        }
+
+        .ppCol {
+          width: 5%;
+        }
+
+        .descriptionCol {
+          width: 40%;
+        }
+      }
+    }
+  }
+}

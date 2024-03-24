@@ -1,0 +1,6 @@
+.dexContent {
+  display: block;
+  height: 100%;
+  max-width: 1500px;
+  margin-left: calc(1.5em + 175px);
+}
