@@ -2,6 +2,8 @@ import React, { useState, useContext } from "react";
 import "./DexContent.css";
 import PokemonData from "./PokemonData";
 import AbilitiesPage from "./AbilitiesPage";
+import MovesPage from "./MovePage";
+import TrainerPage from "./TrainerPage";
 import { DataContext } from "../data/DataContext";
 
 const MainPage = ({ mainTypeColor, setMainTypeColor }) => {
@@ -13,15 +15,15 @@ const MainPage = ({ mainTypeColor, setMainTypeColor }) => {
       setMainTypeColor={setMainTypeColor}
       className="dexContent"
     >
-      {displayedPage === "Pokemon" ? (
+      {displayedPage === "Pokemon" && (
         <PokemonData
           mainTypeColor={mainTypeColor}
           setMainTypeColor={setMainTypeColor}
         />
-      ) : (
-        ""
       )}
-      {displayedPage === "Abilities" ? <AbilitiesPage /> : ""}
+      {displayedPage === "Moves" && <MovesPage />}
+      {displayedPage === "Abilities" && <AbilitiesPage />}
+      {displayedPage === "Trainers" && <TrainerPage />}
     </div>
   );
 };

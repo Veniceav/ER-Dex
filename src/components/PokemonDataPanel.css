@@ -233,15 +233,16 @@
 
             .abilityList {
               display: flex;
-              justify-content: center;
               flex-direction: column;
               width: 45%;
               height: 100%;
+              text-align: left;
 
               .abilityCatagory {
                 font-weight: 500;
                 width: 100%;
                 height: 1.5rem;
+                height: 20%;
               }
 
               .abilityItem {
@@ -250,7 +251,9 @@
                 font-size: 0.9rem;
                 font-weight: 400;
                 width: 100%;
-                padding-top: 0.4em;
+                padding-top: 0.5em;
+                text-align: left;
+                height: 20%;
 
                 &:hover {
                   cursor: pointer;

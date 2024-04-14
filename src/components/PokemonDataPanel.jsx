@@ -3,14 +3,15 @@ import "./PokemonDataPanel.css";
 import gameData from "../gameDataV1.6.1";
 import { DataContext } from "../data/DataContext";
 
-const getEvolutions = (evos = []) => {
+const getEvolutions = (evos = [], gameData) => {
   const arr = [...evos];
 
   evos.forEach((e) => {
     const nextPokemon = gameData.species[e.in];
     const nextEvolutions = nextPokemon.evolutions;
 
-    if (nextEvolutions.length > 0) arr.push(...getEvolutions(nextEvolutions));
+    if (nextEvolutions.length > 0)
+      arr.push(...getEvolutions(nextEvolutions, gameData));
   });
   return arr;
 };
@@ -27,13 +28,12 @@ const evoTypeStrings = {
   EVO_MOVE_MEGA_EVOLUTION: "",
 };
 
-const EvoLine = ({ evolutions, setSearchValue, type1Color }) => {
-  const allEvos = getEvolutions(evolutions);
+const EvoLine = ({ evolutions, setSearchValue, type1Color, nameRegex }) => {
+  const allEvos = getEvolutions(evolutions, gameData);
 
   const allEvoData = allEvos.map((e) => {
     return gameData.species[e.in];
   });
-  // console.log("All Evolutions", allEvoData);
 
   const handleEvoClick = (name) => {
     setSearchValue(name);
@@ -51,12 +51,14 @@ const EvoLine = ({ evolutions, setSearchValue, type1Color }) => {
             .toLowerCase()
             .replaceAll("_", " ");
           return (
-            <div className="evolution" onClick={() => handleEvoClick(name)}>
+            <div
+              className="evolution"
+              onClick={() => handleEvoClick(name)}
+              key={index}
+            >
               <div
                 className="evoRequirement"
-                style={{
-                  color: `${type1Color}`,
-                }}
+                style={{ color: `${type1Color}` }}
               >
                 {evoTypeStrings[evoType] || evoType}:{" "}
                 {evoRawData.rs
@@ -65,13 +67,12 @@ const EvoLine = ({ evolutions, setSearchValue, type1Color }) => {
                   .replace("_", " ")}
               </div>
               <div className="evoTitle">
-                {/* <div className="evoName">{name}</div> */}
                 <div className="evoImg">
                   <img
-                    src={require(`../assets/icons/sprites/${name
-                      .toUpperCase()
-                      .replaceAll(" ", "_")
-                      .replace("-", "_")}.png`)}
+                    src={require(`../assets/icons/sprites/${nameRegex(
+                      name
+                    )}.png`)}
+                    alt={name}
                   ></img>
                 </div>
               </div>
@@ -86,97 +87,70 @@ const EvoLine = ({ evolutions, setSearchValue, type1Color }) => {
 const Stats = ({ stats, type1Color }) => {
   const baseStats = stats;
 
-  return baseStats.map((e, index) => {
-    const statTitles = ["Hp", "Atk", "Def", "Sp. Atk", "Sp. Def", "Speed"];
+  const renderStatBar = (stat) => {
+    const colors = [
+      "redStat",
+      "orangeStat",
+      "yellowStat",
+      "greenStat",
+      "darkGreenStat",
+      "blueStat",
+    ];
+    const thresholds = [30, 60, 90, 120, 150, 255];
+
+    const colorIndex = thresholds.findIndex((threshold) => stat <= threshold);
+    const className = colors[colorIndex];
+
     return (
-      <tr>
-        <th className="statTitle">
-          {statTitles[index]}
-          {":"}
-        </th>
-        <td className="statNumValue">{baseStats[index]}</td>
-        <td className="statBar">
-          {baseStats[index] <= 29 ? (
-            <progress
-              style={{
-                background: `${type1Color}`,
-              }}
-              className="redStat"
-              value={baseStats[index]}
-              max={255}
-            />
-          ) : (
-            ""
-          )}
-          {baseStats[index] <= 59 && baseStats[index] >= 30 ? (
-            <progress
-              className="orangeStat"
-              value={baseStats[index]}
-              max={255}
-            />
-          ) : (
-            ""
-          )}
-          {baseStats[index] <= 89 && baseStats[index] >= 60 ? (
-            <progress
-              className="yellowStat"
-              value={baseStats[index]}
-              max={255}
-            />
-          ) : (
-            ""
-          )}
-          {baseStats[index] <= 119 && baseStats[index] >= 90 ? (
-            <progress
-              className="greenStat"
-              value={baseStats[index]}
-              max={255}
-            />
-          ) : (
-            ""
-          )}
-          {baseStats[index] <= 149 && baseStats[index] >= 120 ? (
-            <progress
-              className="darkGreenStat"
-              value={baseStats[index]}
-              max={255}
-            />
-          ) : (
-            ""
-          )}
-          {baseStats[index] <= 255 && baseStats[index] >= 150 ? (
-            <progress className="blueStat" value={baseStats[index]} max={255} />
-          ) : (
-            ""
-          )}
-        </td>
-      </tr>
+      stat <= 255 && <progress className={className} value={stat} max={255} />
     );
-  });
+  };
+
+  const statTitles = ["Hp", "Atk", "Def", "Sp. Atk", "Sp. Def", "Speed"];
+
+  return (
+    <tbody>
+      {baseStats.map((stat, index) => (
+        <tr key={index}>
+          <th className="statTitle">
+            {statTitles[index]}
+            {":"}
+          </th>
+          <td className="statNumValue">{stat}</td>
+          <td className="statBar">{renderStatBar(stat)}</td>
+        </tr>
+      ))}
+    </tbody>
+  );
 };
 
 const Abilities = ({ abilities, data, handleAbilityChange, type1Color }) => {
   const getAllAbilities = () => {
     const allAbilities = data.abilities;
-    const ability1 = allAbilities[abilities[0]].name;
-    const ability2 = allAbilities[abilities[1]].name;
-    const ability3 = allAbilities[abilities[2]].name;
+    const ability1 = allAbilities[abilities[0]]?.name;
+    const ability2 = allAbilities[abilities[1]]?.name;
+    const ability3 = allAbilities[abilities[2]]?.name;
     return [ability1, ability2, ability3];
   };
-  const targetedAbilities = getAllAbilities(abilities);
-  return targetedAbilities.map((e, index) => {
-    const ability = targetedAbilities[index];
-    return (
-      <ul
-        className="abilityItem"
-        style={{
-          color: `${type1Color}`,
-        }}
-        onClick={() => handleAbilityChange(ability)}
-      >
-        {ability}
-      </ul>
-    );
+
+  const targetedAbilities = getAllAbilities();
+  let mappedAbilities = new Set();
+  return targetedAbilities.map((ability, index) => {
+    if (ability !== "-------" && !mappedAbilities.has(ability)) {
+      mappedAbilities.add(ability);
+      return (
+        <ul
+          className="abilityItem"
+          style={{
+            color: `${type1Color}`,
+          }}
+          onClick={() => handleAbilityChange(ability)}
+          key={index}
+        >
+          {ability}
+        </ul>
+      );
+    }
   });
 };
 
@@ -185,51 +159,31 @@ const Types = ({
   data,
   setType1Color,
   setType2Color,
-  type1Color,
-  type2Color,
   setMainTypeColor,
 }) => {
-  const colors = {
-    normal: "#A8A77A",
-    fire: "#EE8130",
-    water: "#6390F0",
-    electric: "#F7D02C",
-    grass: "#7AC74C",
-    ice: "#96D9D6",
-    fighting: "#C22E28",
-    poison: "#A33EA1",
-    ground: "#E2BF65",
-    flying: "#A98FF3",
-    psychic: "#F95587",
-    bug: "#A6B91A",
-    rock: "#B6A136",
-    ghost: "#735797",
-    dragon: "#6F35FC",
-    dark: "#705746",
-    steel: "#B7B7CE",
-    fairy: "#D685AD",
-  };
-
   const getColor = (type1, type2) => {
-    if (type1 == "Fire") return colors.fire;
-    if (type1 == "Grass") return colors.grass;
-    if (type1 == "Dragon") return colors.dragon;
-    if (type1 == "Poison") return colors.poison;
-    if (type1 == "Water") return colors.water;
-    if (type1 == "Normal") return colors.normal;
-    if (type1 == "Electric") return colors.electric;
-    if (type1 == "Flying") return colors.flying;
-    if (type1 == "Steel") return colors.steel;
-    if (type1 == "Rock") return colors.rock;
-    if (type1 == "Psychic") return colors.psychic;
-    if (type1 == "Bug") return colors.bug;
-    if (type1 == "Fairy") return colors.fairy;
-    if (type1 == "Fighting") return colors.fighting;
-    if (type1 == "Ice") return colors.ice;
-    if (type1 == "Ground") return colors.ground;
-    if (type1 == "Ghost") return colors.ghost;
-    if (type1 == "Dark") return colors.dark;
-    return "";
+    const colorMap = {
+      Fire: "#EE8130",
+      Grass: "#7AC74C",
+      Dragon: "#6F35FC",
+      Poison: "#A33EA1",
+      Water: "#6390F0",
+      Normal: "#A8A77A",
+      Electric: "#F7D02C",
+      Flying: "#A98FF3",
+      Steel: "#B7B7CE",
+      Rock: "#B6A136",
+      Psychic: "#F95587",
+      Bug: "#A6B91A",
+      Fairy: "#D685AD",
+      Fighting: "#C22E28",
+      Ice: "#96D9D6",
+      Ground: "#E2BF65",
+      Ghost: "#735797",
+      Dark: "#705746",
+    };
+
+    return colorMap[type1] || "";
   };
 
   const getTargetType = (types) => {
@@ -262,7 +216,7 @@ const Types = ({
         ) : (
           <img
             src={require(`../assets/icons/types/${type2}.png`)}
-            alt={type1}
+            alt={type2}
           ></img>
         )}
       </div>
@@ -281,10 +235,10 @@ const PokemonDataPanel = ({ setMainTypeColor }) => {
     data,
     abilities,
     innates,
-    imageName,
     setSearchValue,
     setDisplayedPage,
     handleAbilityChange,
+    nameRegex,
   } = useContext(DataContext);
 
   return (
@@ -309,9 +263,7 @@ const PokemonDataPanel = ({ setMainTypeColor }) => {
             <></>
           ) : (
             <img
-              src={require(`../assets/icons/sprites/${imageName
-                .replace(" ", "_")
-                .replaceAll("-", "_")}.png`)}
+              src={require(`../assets/icons/sprites/${nameRegex(name)}.png`)}
               alt={name}
             ></img>
           )}
@@ -320,11 +272,8 @@ const PokemonDataPanel = ({ setMainTypeColor }) => {
       </div>
       <div className="pokemonAltInfo">
         <div className="pokemonAltInfo-stats">
-          {" "}
           <table className="pokemonStats">
-            <tbody>
-              <Stats stats={stats} type1Color={type1Color} />
-            </tbody>
+            <Stats stats={stats} type1Color={type1Color} />
           </table>
         </div>
         <div className="pokemonAltInfo-data">
@@ -354,6 +303,7 @@ const PokemonDataPanel = ({ setMainTypeColor }) => {
             </div>
           </div>
           <EvoLine
+            nameRegex={nameRegex}
             evolutions={evolutions}
             type1Color={type1Color}
             setSearchValue={setSearchValue}

@@ -70,6 +70,10 @@
         background-color: #1f1f1f;
       }
 
+      thead {
+        height: 3rem;
+      }
+
       tr {
         display: table-row;
         padding-left: 1rem;
@@ -85,6 +89,7 @@
         th {
           font-weight: 500;
           font-size: 1.1rem;
+          max-height: 2rem;
         }
 
         td {
@@ -95,6 +100,13 @@
         .nameCol {
           width: 140px;
           font-weight: bold;
+
+          &:hover {
+            cursor: pointer;
+            color: #cacaca;
+            text-decoration: underline;
+            text-underline-offset: 0.2rem;
+          }
         }
 
         .levelCol {

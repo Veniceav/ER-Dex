@@ -1,20 +1,67 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./SearchBar.css";
 import { DataContext } from "../data/DataContext";
 
 const SearchBar = () => {
-  const { searchValue, setSearchValue } = useContext(DataContext);
+  const { searchValue, setSearchValue, data, setDisplayedPage } =
+    useContext(DataContext);
+  const [suggestions, setSuggestions] = useState([]);
+  const [selectedSuggestionIndex, setSelectedSuggestionIndex] = useState(-1);
+  const [searchValueChangedByInput, setSearchValueChangedByInput] =
+    useState(false);
 
   useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      setSearchValue(searchValue);
-    }, 500);
+    // Filter suggestions based on the search value
+    /* Im using searchValueChanged by input to determine whether it was searched via typing, 
+    or selection(ie: Clicked on a pokemons name in th evo table or in the abilities List.
+      This ensures that it doesnt popup unwanted suggestions outside of regular keyboard Input*/
+    const filteredSuggestions = data.species.filter(
+      (pokemon) =>
+        pokemon.name.toLowerCase().includes(searchValue.toLowerCase()) &&
+        pokemon.name !== "??????????"
+    );
+    setSuggestions(filteredSuggestions.slice(0, 5));
 
-    return () => clearTimeout(timeoutId);
-  }, [searchValue]);
+    if (searchValueChangedByInput) {
+      setSelectedSuggestionIndex(-1);
+      setSearchValueChangedByInput(true);
+    }
+  }, [searchValue, data, searchValueChangedByInput]);
 
   const handleOnChange = (e) => {
     setSearchValue(e.target.value);
+    setSearchValueChangedByInput(true);
+  };
+
+  const handleSuggestionClick = (suggestion) => {
+    setSearchValue(suggestion.name);
+    setSuggestions([]); // Hide suggestions dropdown after selection
+    setSearchValueChangedByInput(false);
+    setDisplayedPage("Pokemon");
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault(); // Prevent form submission
+      if (selectedSuggestionIndex !== -1) {
+        setSearchValue(suggestions[selectedSuggestionIndex].name);
+        setSuggestions([]);
+        setSearchValueChangedByInput(false);
+        setDisplayedPage("Pokemon");
+      }
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      setSelectedSuggestionIndex((prevIndex) =>
+        prevIndex > 0 ? prevIndex - 1 : suggestions.length - 1
+      );
+      setDisplayedPage("Pokemon");
+    } else if (e.key === "ArrowDown") {
+      e.preventDefault();
+      setSelectedSuggestionIndex((prevIndex) =>
+        prevIndex < suggestions.length - 1 ? prevIndex + 1 : 0
+      );
+      setDisplayedPage("Pokemon");
+    }
   };
 
   return (
@@ -22,11 +69,29 @@ const SearchBar = () => {
       <input
         autoFocus
         onChange={handleOnChange}
+        onKeyDown={handleKeyDown}
         value={searchValue}
         className="inputField"
         type="text"
         placeholder="Search here"
       ></input>
+      {searchValueChangedByInput && suggestions.length > 0 && (
+        <ul className="suggestionsList">
+          {suggestions.map((suggestion, index) => (
+            <li
+              key={index}
+              onClick={() => handleSuggestionClick(suggestion)}
+              className={
+                index === selectedSuggestionIndex
+                  ? "suggestionItem selected"
+                  : "suggestionItem"
+              }
+            >
+              {suggestion.name}
+            </li>
+          ))}
+        </ul>
+      )}
     </form>
   );
 };

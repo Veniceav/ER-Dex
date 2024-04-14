@@ -37,13 +37,7 @@ function QuickPanel({ mainTypeColor }) {
 
   return (
     <div className="panelContainer">
-      <div
-        className="tabContainer"
-        // style={{
-        //   backgroundColor: `${mainTypeColor}`,
-        //   background: `linear-gradient(290deg, rgba(17 , 17, 17, 1) 8% , ${mainTypeColor} 220%, ${mainTypeColor} 60%`,
-        // }}
-      >
+      <div className="tabContainer">
         <div className="tabList">
           <div
             className="pokemon tab"
@@ -57,9 +51,16 @@ function QuickPanel({ mainTypeColor }) {
           >
             Abilities
           </div>
-          <div className="Moves tab">Moves</div>
+          <div className="Moves tab" onClick={() => setDisplayedPage("Moves")}>
+            Moves
+          </div>
           {/* will include both boss and route trainers */}
-          <div className="routeTrainers tab">Trainers</div>
+          <div
+            className="routeTrainers tab"
+            onClick={() => setDisplayedPage("Trainers")}
+          >
+            Trainers
+          </div>
           <div className="damageCalc tab">Damage Calc</div>
         </div>
       </div>
