@@ -3,7 +3,7 @@ import "./SearchBar.css";
 import { DataContext } from "../data/DataContext";
 
 const SearchBar = () => {
-  const { searchValue, setSearchValue, data, setDisplayedPage } =
+  const { searchValue, setSearchValue, data, displayedPage, setDisplayedPage } =
     useContext(DataContext);
   const [suggestions, setSuggestions] = useState([]);
   const [selectedSuggestionIndex, setSelectedSuggestionIndex] = useState(-1);
@@ -15,10 +15,26 @@ const SearchBar = () => {
     /* Im using searchValueChanged by input to determine whether it was searched via typing, 
     or selection(ie: Clicked on a pokemons name in th evo table or in the abilities List.
       This ensures that it doesnt popup unwanted suggestions outside of regular keyboard Input*/
-    const filteredSuggestions = data.species.filter(
+
+    let filteredSuggestion = [];
+    switch (displayedPage) {
+      case "Pokemon":
+        filteredSuggestion = data.species;
+        break;
+      case "Moves":
+        filteredSuggestion = data.moves;
+        break;
+      case "Abilities":
+        filteredSuggestion = data.abilities;
+        break;
+    }
+
+    const filteredSuggestions = filteredSuggestion.filter(
       (pokemon) =>
         pokemon.name.toLowerCase().includes(searchValue.toLowerCase()) &&
-        pokemon.name !== "??????????"
+        pokemon.name !== "??????????" &&
+        "-" &&
+        "-------"
     );
     setSuggestions(filteredSuggestions.slice(0, 5));
 
@@ -37,7 +53,6 @@ const SearchBar = () => {
     setSearchValue(suggestion.name);
     setSuggestions([]); // Hide suggestions dropdown after selection
     setSearchValueChangedByInput(false);
-    setDisplayedPage("Pokemon");
   };
 
   const handleKeyDown = (e) => {
@@ -47,20 +62,17 @@ const SearchBar = () => {
         setSearchValue(suggestions[selectedSuggestionIndex].name);
         setSuggestions([]);
         setSearchValueChangedByInput(false);
-        setDisplayedPage("Pokemon");
       }
     } else if (e.key === "ArrowUp") {
       e.preventDefault();
       setSelectedSuggestionIndex((prevIndex) =>
         prevIndex > 0 ? prevIndex - 1 : suggestions.length - 1
       );
-      setDisplayedPage("Pokemon");
     } else if (e.key === "ArrowDown") {
       e.preventDefault();
       setSelectedSuggestionIndex((prevIndex) =>
         prevIndex < suggestions.length - 1 ? prevIndex + 1 : 0
       );
-      setDisplayedPage("Pokemon");
     }
   };
 

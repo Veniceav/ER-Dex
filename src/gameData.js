@@ -88501,7 +88501,7 @@ const gameData = {
       id: 1187,
     },
     {
-      name: "Polteageis",
+      name: "Polteageist Antique",
       NAME: "SPECIES_POLTEAGEIST_ANTIQUE",
       stats: {
         base: [60, 65, 65, 134, 114, 70],

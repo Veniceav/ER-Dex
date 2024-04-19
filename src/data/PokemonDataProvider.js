@@ -36,32 +36,64 @@ const PokemonDataProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    const resultsArray = gameData.species.filter((pokemon) => {
-      const targetItem = pokemon.name.toLowerCase();
-      return targetItem.includes(searchValue.toLowerCase());
-    });
+    const getPokemonData = () => {
+      const resultsArray = gameData.species.filter((pokemon) => {
+        const targetItem = pokemon.name.toLowerCase();
+        return targetItem.includes(searchValue.toLowerCase());
+      });
 
-    if (resultsArray.length === 0 || resultsArray[0].name === "??????????") {
-      console.log("No Pokemon Found");
-      setFilteredData(null); // Reset filteredData to null
-      return;
-    }
+      if (resultsArray.length === 0 || resultsArray[0].name === "??????????") {
+        console.log("No Pokemon Found");
+        setFilteredData(null); // Reset filteredData to null
+        return;
+      }
 
-    const finalResult = resultsArray[0];
-    setFilteredData(finalResult);
+      const finalResult = resultsArray[0];
 
-    setName(finalResult.name);
-    setTypes(finalResult.stats.types);
-    setAbilities(finalResult.stats.abis);
-    setInnates(finalResult.stats.inns);
-    setEvolutions(finalResult.evolutions);
-    setStats(finalResult.stats.base);
-    setLevelUpMoves(finalResult.levelUpMoves);
-    setTmHmMoves(finalResult.TMHMMoves);
-    setTutorMoves(finalResult.tutor);
-    setEggMoves(finalResult.eggMoves);
+      setFilteredData(finalResult);
+      setName(finalResult.name);
+      setTypes(finalResult.stats.types);
+      setAbilities(finalResult.stats.abis);
+      setInnates(finalResult.stats.inns);
+      setEvolutions(finalResult.evolutions);
+      setStats(finalResult.stats.base);
+      setLevelUpMoves(finalResult.levelUpMoves);
+      setTmHmMoves(finalResult.TMHMMoves);
+      setTutorMoves(finalResult.tutor);
+      setEggMoves(finalResult.eggMoves);
+    };
 
-    const updatedName = finalResult.name.toUpperCase().replaceAll(" ", "_");
+    const getMoveData = () => {
+      const resultsArray = gameData.moves.filter((move) => {
+        const targetItem = move.name.toLowerCase();
+        return targetItem.includes(searchValue.toLowerCase());
+      });
+
+      if (resultsArray.length === 0 || resultsArray[0].name === "-") {
+        console.log("No moves found");
+        return;
+      }
+      const finalResult = resultsArray[0];
+      handleMoveChange(finalResult.name);
+    };
+
+    const getAbilityData = () => {
+      const resultsArray = gameData.abilities.filter((ability) => {
+        const targetItem = ability.name.toLowerCase();
+        return targetItem.includes(searchValue.toLowerCase());
+      });
+
+      if (resultsArray.length === 0 || resultsArray[0].name === "-------") {
+        console.log("No abilities found");
+        return;
+      }
+      const finalResult = resultsArray[0];
+      handleAbilityChange(finalResult.name);
+    };
+
+    if (displayedPage === "Pokemon") getPokemonData();
+    if (displayedPage === "Moves") getMoveData();
+    if (displayedPage === "Abilities") getAbilityData();
   }, [searchValue]);
 
   const moveNames = gameData.moves.map((e) => e.name);
