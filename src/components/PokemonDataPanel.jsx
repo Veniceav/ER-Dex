@@ -1,17 +1,16 @@
 import React, { useContext, useState } from "react";
-import "./PokemonDataPanel.css";
-import gameData from "../gameDataV1.6.1";
+import "../css/PokemonDataPanel.css";
 import { DataContext } from "../data/DataContext";
 
-const getEvolutions = (evos = [], gameData) => {
+const getEvolutions = (evos = [], data) => {
   const arr = [...evos];
 
   evos.forEach((e) => {
-    const nextPokemon = gameData.species[e.in];
+    const nextPokemon = data.species[e.in];
     const nextEvolutions = nextPokemon.evolutions;
 
     if (nextEvolutions.length > 0)
-      arr.push(...getEvolutions(nextEvolutions, gameData));
+      arr.push(...getEvolutions(nextEvolutions, data));
   });
   return arr;
 };
@@ -28,16 +27,18 @@ const evoTypeStrings = {
   EVO_MOVE_MEGA_EVOLUTION: "",
 };
 
-const EvoLine = ({ evolutions, setSearchValue, type1Color, nameRegex }) => {
-  const allEvos = getEvolutions(evolutions, gameData);
+const EvoLine = ({
+  evolutions,
+  type1Color,
+  nameRegex,
+  handlePokemonClick,
+  data,
+}) => {
+  const allEvos = getEvolutions(evolutions, data);
 
   const allEvoData = allEvos.map((e) => {
-    return gameData.species[e.in];
+    return data.species[e.in];
   });
-
-  const handleEvoClick = (name) => {
-    setSearchValue(name);
-  };
 
   return (
     <div className="evoLine">
@@ -46,14 +47,14 @@ const EvoLine = ({ evolutions, setSearchValue, type1Color, nameRegex }) => {
         {allEvoData.map((d, index) => {
           const evoRawData = allEvos[index];
           const name = d.name;
-          const evoType = gameData.evoKindT[evoRawData.kd]
+          const evoType = data.evoKindT[evoRawData.kd]
             .replace("EVO", "")
             .toLowerCase()
             .replaceAll("_", " ");
           return (
             <div
               className="evolution"
-              onClick={() => handleEvoClick(name)}
+              onClick={() => handlePokemonClick(name)}
               key={index}
             >
               <div
@@ -161,7 +162,7 @@ const Types = ({
   setType2Color,
   setMainTypeColor,
 }) => {
-  const getColor = (type1, type2) => {
+  const getColor = (type) => {
     const colorMap = {
       Fire: "#EE8130",
       Grass: "#7AC74C",
@@ -183,7 +184,7 @@ const Types = ({
       Dark: "#705746",
     };
 
-    return colorMap[type1] || "";
+    return colorMap[type] || "";
   };
 
   const getTargetType = (types) => {
@@ -235,10 +236,10 @@ const PokemonDataPanel = ({ setMainTypeColor }) => {
     data,
     abilities,
     innates,
-    setSearchValue,
     setDisplayedPage,
     handleAbilityChange,
     nameRegex,
+    handlePokemonClick,
   } = useContext(DataContext);
 
   return (
@@ -303,10 +304,11 @@ const PokemonDataPanel = ({ setMainTypeColor }) => {
             </div>
           </div>
           <EvoLine
+            data={data}
             nameRegex={nameRegex}
             evolutions={evolutions}
             type1Color={type1Color}
-            setSearchValue={setSearchValue}
+            handlePokemonClick={handlePokemonClick}
           />
         </div>
       </div>

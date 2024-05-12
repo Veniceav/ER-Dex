@@ -1,73 +1,115 @@
 import React, { useContext, useState, useMemo, useEffect } from "react";
-import "./TrainerPage.css";
+import "../css/TrainerPage.css";
 import { DataContext } from "../data/DataContext";
 
 const TrainerPage = () => {
   const {
     data,
-    setSearchValue,
-    setDisplayedPage,
     handleAbilityChange,
     nameRegex,
     handleMoveChange,
+    handlePokemonClick,
+    setCurrentParty,
+    currentParty,
+    selectedTrainer,
+    handleTrainerChange,
   } = useContext(DataContext);
-  const [selectedTrainer, setSelectedTrainer] = useState([]);
-  const [currentParty, setCurrentParty] = useState([]);
-  // const [selectedBattleType, setSelectedBattleType] = useState("party");
+
+  const trainers = data.trainers;
   const [toggleState, setToggleState] = useState(1);
+  const [difficultyState, setDifficultyState] = useState("Normal");
+
   const toggleTab = (index) => {
     setToggleState(index);
   };
 
+  const toggleDifficulty = (state) => {
+    setDifficultyState(state);
+  };
+
   const getTrainerParty = () => {
-    if (selectedTrainer.party !== undefined) {
-      let partyObj = selectedTrainer.party.map((pokemon) => {
-        const pkmnObj = data.species[pokemon.spc];
-        const pkmnName = pkmnObj.name;
-        const pkmnAbility = [
-          data.abilities[pkmnObj.stats.abis[pokemon.abi]].name,
-          data.abilities[pkmnObj.stats.abis[pokemon.abi]].desc,
-        ];
-        const pkmnNature = data.natureT[pokemon.nature];
-        let pkmnItem = data.items[pokemon.item].name;
+    if (selectedTrainer) {
+      let partyObj;
 
-        let pkmnTypes = [
-          data.typeT[pkmnObj.stats.types[0]],
-          data.typeT[pkmnObj.stats.types[1]],
-        ];
+      // Check if selectedTrainer has the specified difficultyState
+      if (difficultyState === "Insane") {
+        partyObj = selectedTrainer.insane;
+      } else if (difficultyState === "Normal") {
+        partyObj = selectedTrainer.party;
+      } else if (
+        difficultyState === "Rem1" &&
+        selectedTrainer.rem &&
+        selectedTrainer.rem[0]
+      ) {
+        partyObj = selectedTrainer.rem[0].party;
+      } else if (
+        difficultyState === "Rem2" &&
+        selectedTrainer.rem &&
+        selectedTrainer.rem[1]
+      ) {
+        partyObj = selectedTrainer.rem[1].party;
+      } else if (
+        difficultyState === "Rem3" &&
+        selectedTrainer.rem &&
+        selectedTrainer.rem[2]
+      ) {
+        partyObj = selectedTrainer.rem[2].party;
+      }
 
-        const pkmnMoves = pokemon.moves.map((move) => {
-          const moveName = data.moves[move].name;
-          // const moveDesc = data.moves[move].desc;
-          return moveName;
+      if (partyObj) {
+        return partyObj.map((pokemon) => {
+          const pkmnObj = data.species[pokemon.spc];
+          const pkmnName = pkmnObj.name;
+          const pkmnAbility = [
+            data.abilities[pkmnObj.stats.abis[pokemon.abi]].name,
+            data.abilities[pkmnObj.stats.abis[pokemon.abi]].desc,
+          ];
+          const pkmnNature = data.natureT[pokemon.nature];
+          let pkmnItem = data.items[pokemon.item].name;
+
+          let pkmnTypes = [
+            data.typeT[pkmnObj.stats.types[0]],
+            data.typeT[pkmnObj.stats.types[1]],
+          ];
+
+          const pkmnMoves = pokemon.moves.map((move) => {
+            const moveName = data.moves[move].name;
+            return moveName;
+          });
+          let pokemonBuild = {
+            name: pkmnName,
+            ability: pkmnAbility,
+            type: pkmnTypes,
+            item: pkmnItem,
+            moves: pkmnMoves,
+            ivs: pokemon.ivs,
+            evs: pokemon.evs,
+            nature: pkmnNature,
+          };
+          console.log("build", pokemonBuild);
+          return pokemonBuild;
         });
-        let pokemonBuild = {
-          name: pkmnName,
-          ability: pkmnAbility,
-          type: pkmnTypes,
-          item: pkmnItem,
-          moves: pkmnMoves,
-          ivs: pokemon.ivs,
-          evs: pokemon.evs,
-          nature: pkmnNature,
-        };
-        console.log("build", pokemonBuild);
-        return pokemonBuild;
-      });
-      return partyObj;
+      } else {
+        // Handle case where partyObj is undefined
+        console.error(
+          "Party object is undefined for the selected trainer and difficulty state"
+        );
+        return [];
+      }
+    } else {
+      // Handle case where selectedTrainer is undefined
+      console.error("Selected trainer is undefined");
+      return [];
     }
   };
 
-  const handleTrainerChange = (trainer) => {
-    setSelectedTrainer(trainer);
-  };
-
   useEffect(() => {
-    setCurrentParty(getTrainerParty);
-    console.log(selectedTrainer);
-  }, [selectedTrainer]);
-
-  const trainers = data.trainers;
+    const updateTrainerParty = () => {
+      const party = getTrainerParty();
+      setCurrentParty(party);
+    };
+    updateTrainerParty();
+  }, [selectedTrainer, difficultyState]);
 
   const trainersArr = useMemo(() => {
     const filterTrainers = (trainers, trainerType) => {
@@ -88,15 +130,20 @@ const TrainerPage = () => {
 
     switch (toggleState) {
       case 1:
-        filteredTrainers = filterTrainers(trainers, "Leader"); //Gym Leaders/Aqua and Magma Leaders
+        filteredTrainers = trainers;
         break;
       case 2:
+        filteredTrainers = filterTrainers(trainers, "Leader").concat(
+          filterTrainers(trainers, "Elite Four")
+        ); //Gym Leaders/Aqua and Magma Leaders
+        break;
+      case 3:
         filteredTrainers = filterTrainers(trainers, "Team Aqua").concat(
           filterTrainers(trainers, "Team Magma"),
           filterTrainers(trainers, "Admin")
         ); //Team Aqua/Magma Grunts
         break;
-      case 3:
+      case 4:
         filteredTrainers = excludeTrainers(trainers, [
           "Leader",
           "Team Aqua",
@@ -104,9 +151,10 @@ const TrainerPage = () => {
           "Admin",
           "May",
           "Brendan",
+          "Elite Four",
         ]); //Every other Trainer
         break;
-      case 4:
+      case 5:
         filteredTrainers = filterTrainers(trainers, "May").concat(
           filterTrainers(trainers, "Brendan")
         ); //Rivals
@@ -135,12 +183,17 @@ const TrainerPage = () => {
                 }}
               >
                 {toggleState === 1 &&
-                  trainer.name.replace("Magma", "M.").replace("Aqua", "A.")}
+                  trainer.name
+                    .replace("Magma", "M.")
+                    .replace("Aqua", "A.")
+                    .replaceAll("Pkmn Trainer 3", "")}
                 {toggleState === 2 &&
                   trainer.name.replace("Magma", "M.").replace("Aqua", "A.")}
                 {toggleState === 3 &&
-                  trainer.name.replace("Pkmn Trainer 3", "")}
+                  trainer.name.replace("Magma", "M.").replace("Aqua", "A.")}
                 {toggleState === 4 &&
+                  trainer.name.replace("Pkmn Trainer 3", "")}
+                {toggleState === 5 &&
                   trainer.name.replace("Pkmn Trainer 3", "")}
               </li>
             );
@@ -156,24 +209,45 @@ const TrainerPage = () => {
       setToggleBType(index);
     };
 
-    const handlePokemonClick = (name) => {
-      setSearchValue(name.replace(":", ""));
-      setDisplayedPage("Pokemon");
-    };
-
     return (
       <div className="teamDataContainer">
         <div className="teamData-header">
           <div className="teamData-trainerName">{selectedTrainer.name}</div>
           <div className="teamData-battleType">
-            <div className="battleType-tab" onClick={() => toggleTab(1)}>
+            <div
+              className="battleType-tab"
+              onClick={() => toggleDifficulty("Normal")}
+            >
               Normal
             </div>
-            <div className="battleType-tab" onClick={() => toggleTab(2)}>
+            <div
+              className="battleType-tab"
+              onClick={() => toggleDifficulty("Insane")}
+            >
               Elite
             </div>
-            <div className="battleType-tab" onClick={() => toggleTab(3)}>
-              Rematch
+            <div className="battleType-tab rematches">
+              Rematch:
+              <div className="rematch-tabs">
+                <div
+                  className="remIndex"
+                  onClick={() => toggleDifficulty("Rem1")}
+                >
+                  [1]
+                </div>
+                <div
+                  className="remIndex"
+                  onClick={() => toggleDifficulty("Rem2")}
+                >
+                  [2]
+                </div>
+                <div
+                  className="remIndex"
+                  onClick={() => toggleDifficulty("Rem3")}
+                >
+                  [3]
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -319,15 +393,18 @@ const TrainerPage = () => {
       <div className="trainerListContainer">
         <div className="trainerList-tabs">
           <div className="trainerTab" onClick={() => toggleTab(1)}>
-            Gym/Team Leaders
+            All
           </div>
           <div className="trainerTab" onClick={() => toggleTab(2)}>
-            Aqua/Magma
+            E4/Leaders
           </div>
           <div className="trainerTab" onClick={() => toggleTab(3)}>
-            Trainers
+            Aqua/Magma
           </div>
           <div className="trainerTab" onClick={() => toggleTab(4)}>
+            Route Trainers
+          </div>
+          <div className="trainerTab" onClick={() => toggleTab(5)}>
             Rival
           </div>
         </div>

@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import "./AbilitiesPage.css";
+import "../css/AbilitiesPage.css";
 import { DataContext } from "../data/DataContext";
 
 const AbilityList = ({ abilityNames, handleTitleChange }) => {
@@ -21,16 +21,10 @@ const AbilityData = ({
   abilityDescription,
   filteredPokemon,
   abilityNames,
-  setSearchValue,
-  setDisplayedPage,
   handleAbilityChange,
   nameRegex,
+  handlePokemonClick,
 }) => {
-  const handlePokemonClick = (name) => {
-    setSearchValue(name.replace(":", ""));
-    setDisplayedPage("Pokemon");
-  };
-
   const renderAbilityItem = (ability) => {
     return (
       <div className="abilityItem" onClick={() => handleAbilityChange(ability)}>
@@ -54,7 +48,11 @@ const AbilityData = ({
             alt={name}
           />
         </td>
-        <td className="pokemonName" onClick={() => handlePokemonClick(name)}>
+        <td
+          className="pokemonName"
+          key={index}
+          onClick={() => handlePokemonClick(name)}
+        >
           {name}
         </td>
         <td className="pokemonAbilities">
@@ -114,6 +112,7 @@ const AbilitiesPage = () => {
     abilityTitle,
     abilityDescription,
     nameRegex,
+    handlePokemonClick,
   } = useContext(DataContext);
 
   return (
@@ -131,6 +130,7 @@ const AbilitiesPage = () => {
         setSearchValue={setSearchValue}
         handleAbilityChange={handleAbilityChange}
         filteredPokemon={filteredPokemon}
+        handlePokemonClick={handlePokemonClick}
       />
     </div>
   );

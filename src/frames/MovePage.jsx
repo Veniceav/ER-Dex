@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import "./MovePage.css";
+import "../css/MovePage.css";
 import { DataContext } from "../data/DataContext";
 
 const MoveList = ({ moveNames, handleMoveChange }) => {
@@ -28,15 +28,9 @@ const MoveData = ({
   moveTitle,
   moveDescription,
   filteredPokemon,
-  setSearchValue,
-  setDisplayedPage,
   nameRegex,
+  handlePokemonClick,
 }) => {
-  const handlePokemonClick = (name) => {
-    setSearchValue(name);
-    setDisplayedPage("Pokemon");
-  };
-
   const renderPokemonRow = (pokemon, index) => {
     const { name, moves } = pokemon;
     const moveLearnType = pokemon.moveLearnType.join(", ");
@@ -84,12 +78,12 @@ const MovesPage = () => {
     setSearchValue,
     setDisplayedPage,
     handleMoveChange,
-    data, // Include data in the props
     filteredPokemonMoves,
     moveNames,
     moveTitle,
     moveDescription,
     nameRegex,
+    handlePokemonClick,
   } = useContext(DataContext);
 
   return (
@@ -102,6 +96,7 @@ const MovesPage = () => {
         setDisplayedPage={setDisplayedPage}
         filteredPokemon={filteredPokemonMoves}
         nameRegex={nameRegex}
+        handlePokemonClick={handlePokemonClick}
       />
     </div>
   );

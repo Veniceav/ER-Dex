@@ -22,6 +22,8 @@ const PokemonDataProvider = ({ children }) => {
   const [moveDescription, setMoveDescription] = useState("");
   const [filteredPokemon, setFilteredPokemon] = useState([]);
   const [filteredPokemonMoves, setFilteredPokemonMoves] = useState([]);
+  const [selectedTrainer, setSelectedTrainer] = useState([]);
+  const [currentParty, setCurrentParty] = useState([]);
 
   const nameRegex = (name) => {
     let fixedName = name
@@ -91,9 +93,20 @@ const PokemonDataProvider = ({ children }) => {
       handleAbilityChange(finalResult.name);
     };
 
+    const getTrainerData = () => {
+      const resultsArray = gameData.trainers.filter((trainer) => {
+        const targetItem = trainer.name.toLowerCase();
+        return targetItem.includes(searchValue.toLowerCase());
+      });
+
+      const finalResult = resultsArray[0];
+      handleTrainerChange(finalResult);
+    };
+
     if (displayedPage === "Pokemon") getPokemonData();
     if (displayedPage === "Moves") getMoveData();
     if (displayedPage === "Abilities") getAbilityData();
+    if (displayedPage === "Trainers") getTrainerData();
   }, [searchValue]);
 
   const moveNames = gameData.moves.map((e) => e.name);
@@ -115,7 +128,7 @@ const PokemonDataProvider = ({ children }) => {
     return filteredAbility;
   };
 
-  const filterByMove = (matchingIndex, moveNames) => {
+  const filterByMove = (matchingIndex) => {
     const filteredMoves = gameData.species
       .map((pokemon) => {
         const moveLearnType = [];
@@ -148,7 +161,6 @@ const PokemonDataProvider = ({ children }) => {
             pokemon.eggMoves.includes(matchingIndex))
         );
       });
-    console.log();
     return filteredMoves;
   };
 
@@ -164,7 +176,7 @@ const PokemonDataProvider = ({ children }) => {
     const getIndex = abilityNames.indexOf(ability);
     setAbilityTitle(ability);
     setAbilityDescription(gameData.abilities[getIndex].desc);
-    console.log(abilityTitle);
+    // console.log(abilityTitle);
     setFilteredPokemon(filterbyAbility(Number(getIndex)));
     if (displayedPage !== "Abilities") {
       setDisplayedPage("Abilities");
@@ -178,6 +190,16 @@ const PokemonDataProvider = ({ children }) => {
     setAbilityDescription(gameData.abilities[getIndex].desc);
     setAbilityTitle(value);
     setFilteredPokemon(filterbyAbility(Number(getIndex)));
+  };
+
+  const handlePokemonClick = (name) => {
+    setSearchValue(name.replace(":", ""));
+    setDisplayedPage("Pokemon");
+  };
+
+  const handleTrainerChange = (trainer) => {
+    setSelectedTrainer(trainer);
+    // console.log("Trainer", selectedTrainer);
   };
 
   const providerState = {
@@ -208,6 +230,12 @@ const PokemonDataProvider = ({ children }) => {
     moveTitle,
     moveDescription,
     nameRegex,
+    handlePokemonClick,
+    selectedTrainer,
+    setSelectedTrainer,
+    currentParty,
+    setCurrentParty,
+    handleTrainerChange,
   };
 
   return (

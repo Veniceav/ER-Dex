@@ -1,21 +1,21 @@
 import React, { useState } from "react";
-import QuickPanel from "./frames/QuickPanel";
+import QuickPanel from "./components/QuickPanel";
 import DexContent from "./frames/DexContent";
 import "./DexPage.css";
 import SearchBar from "./components/SearchBar";
 import PokemonDataProvider from "./data/PokemonDataProvider";
 
 const DexPage = () => {
-  const [mainTypeColor, setMainTypeColor] = useState("");
+  const [maintypecolor, setmaintypecolor] = useState(null);
   return (
     <PokemonDataProvider>
       <div className="page">
         <SearchBar />
         <div className="activityContainer">
-          <QuickPanel mainTypeColor={mainTypeColor} />
+          <QuickPanel mainTypeColor={maintypecolor} />
           <DexContent
-            mainTypeColor={mainTypeColor}
-            setMainTypeColor={setMainTypeColor}
+            mainTypeColor={maintypecolor}
+            setMainTypeColor={setmaintypecolor}
           />
         </div>
       </div>

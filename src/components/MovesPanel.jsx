@@ -1,5 +1,5 @@
 import React, { useContext, useState, useMemo } from "react";
-import "./MovesPanel.css";
+import "../css/MovesPanel.css";
 import { DataContext } from "../data/DataContext";
 
 const MovesPanel = ({ mainTypeColor }) => {

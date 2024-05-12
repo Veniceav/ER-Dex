@@ -9,14 +9,17 @@
     align-items: center;
     height: 100%;
     width: 25%;
-    min-width: 300px;
-    border: 1px solid black;
-    border-radius: 20px;
+    margin-right: 20px;
+    max-width: 350px;
+    min-width: 200px;
+    padding-top: 20px;
+    background-color: #191919;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.9);
+    border-radius: 15px;
     overflow: scroll;
     scroll-behavior: smooth;
     scrollbar-color: #cacaca transparent;
     scrollbar-width: thin;
-    background-color: #191919;
 
     ol {
       width: 100%;
@@ -42,7 +45,6 @@
   .moveDataContainer {
     border: 1px solid black;
     border-radius: 20px;
-    margin-left: 20px;
     padding: 10px 20px;
     display: flex;
     flex-direction: column;
@@ -58,23 +60,26 @@
       width: 100%;
 
       .moveName {
-        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         border: 1px solid black;
         height: 30%;
         width: 30%;
-        font-size: 1.5em;
-        line-height: 2em;
+        font-size: 2rem;
         border-radius: 10px;
         background-color: #1f1f1f;
       }
 
       .moveDescription {
+        display: flex;
+        align-items: center;
+        justify-content: center;
         height: 30%;
         width: 100%;
         border: 1px solid black;
         border-radius: 10px;
-        font-size: 1.2em;
-        line-height: 3em;
+        font-size: 1.4em;
         background-color: #1f1f1f;
       }
     }

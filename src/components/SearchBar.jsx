@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
-import "./SearchBar.css";
+import "../css/SearchBar.css";
 import { DataContext } from "../data/DataContext";
 
 const SearchBar = () => {
-  const { searchValue, setSearchValue, data, displayedPage, setDisplayedPage } =
+  const { searchValue, setSearchValue, data, displayedPage } =
     useContext(DataContext);
   const [suggestions, setSuggestions] = useState([]);
   const [selectedSuggestionIndex, setSelectedSuggestionIndex] = useState(-1);
@@ -26,6 +26,12 @@ const SearchBar = () => {
         break;
       case "Abilities":
         filteredSuggestion = data.abilities;
+        break;
+      case "Trainers":
+        filteredSuggestion = data.trainers;
+        break;
+      case "TBuilder":
+        filteredSuggestion = data.species;
         break;
     }
 
@@ -79,7 +85,6 @@ const SearchBar = () => {
   return (
     <form className="searchBarContainer">
       <input
-        autoFocus
         onChange={handleOnChange}
         onKeyDown={handleKeyDown}
         value={searchValue}

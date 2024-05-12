@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import "./QuickPanel.css";
+import "../css/QuickPanel.css";
 import { DataContext } from "../data/DataContext";
 
 const RosterSlot = (props) => {
@@ -8,33 +8,6 @@ const RosterSlot = (props) => {
 
 function QuickPanel({ mainTypeColor }) {
   const { setDisplayedPage } = useContext(DataContext);
-  // const currentRoster = [
-  //   {
-  //     species: "",
-  //     icon: "",
-  //   },
-  //   {
-  //     species: "",
-  //     icon: "",
-  //   },
-  //   {
-  //     species: "",
-  //     icon: "",
-  //   },
-  //   {
-  //     species: "",
-  //     icon: "",
-  //   },
-  //   {
-  //     species: "",
-  //     icon: "",
-  //   },
-  //   {
-  //     species: "",
-  //     icon: "",
-  //   },
-  // ];
-
   return (
     <div className="panelContainer">
       <div className="tabContainer">
@@ -54,24 +27,20 @@ function QuickPanel({ mainTypeColor }) {
           <div className="Moves tab" onClick={() => setDisplayedPage("Moves")}>
             Moves
           </div>
-          {/* will include both boss and route trainers */}
           <div
-            className="routeTrainers tab"
+            className="trainers tab"
             onClick={() => setDisplayedPage("Trainers")}
           >
             Trainers
           </div>
-          <div className="damageCalc tab">Damage Calc</div>
+          <div
+            className="teamBuilder tab"
+            onClick={() => setDisplayedPage("TBuilder")}
+          >
+            Team Builder
+          </div>
         </div>
       </div>
-      {/* <div className="teamBuilderContainer">
-        <div className="header">Team Builder</div>
-        <div className="rosterIcons">
-          {currentRoster.map((slot, index) => {
-            return <RosterSlot key={index}>{slot.icon}</RosterSlot>;
-          })}
-        </div>
-      </div> */}
     </div>
   );
 }

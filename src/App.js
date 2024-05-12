@@ -1,5 +1,4 @@
 import "./reset.css";
-import "./App.css";
 import DexPage from "./DexPage";
 
 function App() {

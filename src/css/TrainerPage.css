@@ -6,10 +6,12 @@
   .trainerListContainer {
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
     height: 100%;
     width: 25%;
     margin-right: 20px;
+    padding: 1rem;
     max-width: 350px;
     min-width: 200px;
     background-color: #191919;
@@ -18,17 +20,33 @@
     overflow: hidden;
 
     .trainerList-tabs {
+      position: relative;
       display: flex;
+      flex-direction: column;
+      justify-content: space-around;
       width: 100%;
-      height: 20%;
+      height: 18%;
+      margin-bottom: 20px;
+
+      .trainerTab {
+        height: fit-content;
+        width: 100%;
+        margin: 0 auto;
+        padding: 5px 20px;
+        border: 1px solid #cacaca3f;
+        border-radius: 10px;
+        &:hover {
+          cursor: pointer;
+          color: #cacaca;
+          border: 1px solid #cacaca;
+        }
+      }
     }
 
     .trainerList-listContainer {
-      display: flex;
-      flex-direction: column;
       width: 100%;
       height: 100%;
-      overflow: scroll;
+      overflow-y: scroll;
       scrollbar-color: #535353 transparent;
       scroll-behavior: smooth;
       scrollbar-width: thin;
@@ -38,13 +56,15 @@
         text-align: left;
         height: 100%;
         border: 1px solid white;
+        border-radius: 15px;
         overflow: scroll;
 
         li {
+          width: 100%;
           height: 1.5rem;
           margin-top: 0.9em;
           width: 100%;
-          padding: 0 10px;
+          padding-left: 10px;
           font-size: 1.1rem;
           line-height: 1rem;
           border-bottom: 1px solid black;
@@ -89,23 +109,54 @@
       .teamData-battleType {
         display: flex;
         align-items: center;
-        justify-content: center;
+        justify-content: space-around;
         height: 40%;
         width: 100%;
 
         .battleType-tab {
           border: none;
-          font-size: 1.2rem;
+          font-size: 1.3rem;
           font-weight: 400;
-          width: 15%;
-          height: 40%;
+          width: 20%;
+          height: 70%;
           color: #f5f5f5;
+          border: 1px solid #cacaca3f;
+          padding: 5px 20px;
+          border-radius: 12px;
 
           &:hover {
             cursor: pointer;
             color: #cacaca;
-            text-decoration: underline;
-            text-underline-offset: 0.2rem;
+            border-color: #cacaca;
+            margin-top: 5px;
+          }
+
+          .battleType-tab[disabled] {
+            pointer-events: none;
+            background-color: #cacaca;
+            color: #535353;
+          }
+        }
+
+        .rematches {
+          display: flex;
+          &:hover {
+            cursor: default;
+            color: #f5f5f5;
+            text-decoration: none;
+          }
+          .rematch-tabs {
+            display: flex;
+            justify-content: space-around;
+
+            .remIndex {
+              width: fit-content;
+              height: fit-content;
+              &:hover {
+                cursor: pointer;
+                color: #cacaca;
+              }
+            }
           }
         }
       }

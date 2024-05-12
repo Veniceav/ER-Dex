@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import "./PokemonData.css";
+import React from "react";
+import "../css/PokemonData.css";
 import PokemonDataPanel from "../components/PokemonDataPanel";
 import MovesPanel from "../components/MovesPanel";
 

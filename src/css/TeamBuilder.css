@@ -1,0 +1,530 @@
+.tBuilderContainer {
+  display: flex;
+  width: 100%;
+  height: 100%;
+
+  .arrow {
+    position: absolute;
+    left: 85%;
+    height: 40px;
+    width: 15%;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+  .down {
+    background-image: linear-gradient(45deg, transparent 50%, gray 50%),
+      linear-gradient(135deg, gray 50%, transparent 50%),
+      linear-gradient(to right, #ccc, #ccc);
+    background-position: calc(100% - 20px) calc(1em + 2px),
+      calc(100% - 15px) calc(1em + 2px), calc(100% - 2.5em) 0.5em;
+    background-size: 5px 5px, 5px 5px, 1px 1.5em;
+    background-repeat: no-repeat;
+  }
+
+  .up {
+    background-image: linear-gradient(45deg, #cacaca 50%, transparent 50%),
+      linear-gradient(135deg, transparent 50%, #cacaca 50%),
+      linear-gradient(to right, #ccc, #ccc);
+    background-position: calc(100% - 15px) 1em, calc(100% - 20px) 1em,
+      calc(100% - 2.5em) 0.5em;
+    background-size: 5px 5px, 5px 5px, 1px 1.5em;
+    background-repeat: no-repeat;
+    border-color: #cacaca;
+    outline: 0;
+  }
+
+  .dropDown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    height: fit-content;
+    border: 1px solid #cacaca;
+    border-bottom: none;
+    border-top: none;
+    border-radius: 0 0 10px 10px;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+
+    .dropDown-item {
+      padding: 5px 10px;
+      background-color: #13131398;
+      width: 100%;
+      height: fit-content;
+
+      &:hover {
+        background-color: #23232366;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .pokemonDataContainer {
+    .pokemonData-displayCard {
+      position: relative;
+      height: 25%;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow: hidden;
+      border-radius: 20px;
+
+      .pokeball-bg {
+        position: absolute;
+        background-image: url("../assets/icons/pokeball.png");
+        background-repeat: no-repeat;
+        opacity: 0.5;
+        left: 45%;
+        rotate: -30deg;
+        top: -40%;
+        background-size: contain;
+        height: 100%;
+        width: 100%;
+      }
+
+      .displayCard-header {
+        display: flex;
+        align-items: center;
+        height: 22%;
+        z-index: 1;
+        backdrop-filter: blur(2px);
+        padding: 10px 10px;
+        margin-bottom: 5%;
+
+        .card-pokemonName {
+          height: fit-content;
+          text-align: left;
+          font-size: 1.5rem;
+          min-width: 50%;
+          font-weight: 400;
+        }
+
+        .card-types {
+          width: fit-content;
+          display: flex;
+          margin-right: 10px;
+
+          img {
+            width: 37px;
+            height: 37px;
+            filter: opacity(0.9);
+          }
+        }
+
+        .level-details {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          width: fit-content;
+          height: 100%;
+
+          .level-label {
+            height: fit-content;
+            width: 100%;
+          }
+
+          .level-input {
+            width: 50px;
+            height: 30px;
+            color: black;
+            text-align: center;
+            height: 70%;
+          }
+        }
+      }
+
+      .card-Icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 77%;
+        z-index: 1;
+        background: rgba(0, 0, 0, 0.06);
+        border-radius: 16px;
+        box-shadow: inset 0 -10px 30px rgba(0, 0, 0, 0.2);
+        backdrop-filter: blur(4.9px);
+        -webkit-backdrop-filter: blur(4.9px);
+
+        img {
+          height: 10rem;
+          width: 10rem;
+          image-rendering: pixelated;
+        }
+      }
+    }
+
+    .pokemonData-details {
+      display: block;
+      width: 100%;
+      height: 75%;
+      border: 1px solid #cacaca;
+      padding: 0.5rem;
+      font-weight: 500;
+
+      input {
+        color: black;
+      }
+
+      .move-details {
+        display: flex;
+        flex-direction: column;
+        height: 20%;
+        width: 100%;
+
+        label {
+          height: fit-content;
+          font-size: 1.2rem;
+        }
+
+        .move-grid {
+          display: grid;
+          padding: 0.5rem;
+          grid-template-columns: 1fr 1fr;
+          grid-template-rows: 30px 30px;
+          gap: 10px;
+          width: 100%;
+          height: 100%;
+
+          .grid-Item {
+            &:hover {
+              cursor: pointer;
+            }
+          }
+        }
+      }
+
+      .ability-details {
+        padding: 0.5rem;
+        display: flex;
+        justify-content: space-between;
+        height: 25%;
+        width: 100%;
+
+        label {
+          font-size: 1.2rem;
+          height: fit-content;
+          margin-bottom: 10px;
+        }
+
+        .main-ability {
+          display: flex;
+          position: relative;
+          flex-direction: column;
+          width: 48%;
+
+          .ability-input {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-evenly;
+            background-color: transparent;
+            border: 1px solid #cacaca;
+            width: 100%;
+            height: 25px;
+          }
+
+          .ability-items {
+            top: 31%;
+          }
+        }
+
+        .innate-ability {
+          display: flex;
+          flex-direction: column;
+          width: 48%;
+
+          .innate-list {
+            height: 100%;
+            width: 100%;
+
+            .innate-list-item {
+              height: fit-content;
+              margin-bottom: 10px;
+            }
+          }
+        }
+      }
+      .moveTable-Container {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 55%;
+        border: 1px solid #cacaca;
+
+        .table-tabs {
+          display: flex;
+          align-items: center;
+          justify-content: space-evenly;
+          width: 100%;
+          height: 15%;
+
+          .tab {
+            height: fit-content;
+            width: 22%;
+            border: 1px solid #cacaca;
+            padding: 2px 2px;
+            background-color: transparent;
+
+            &:hover {
+              cursor: pointer;
+            }
+          }
+        }
+        .moveTable {
+          vertical-align: text-top;
+          display: flex;
+          flex-direction: column;
+          width: 100%;
+          height: 100%;
+          overflow: scroll;
+          scrollbar-color: #535353 transparent;
+          scroll-behavior: smooth;
+          scrollbar-width: thin;
+
+          tr:nth-child(even) {
+            background-color: #1f1f1f;
+          }
+
+          thead {
+            width: 100%;
+            height: 10%;
+
+            th {
+              width: 100%;
+              height: 100%;
+              font-weight: 400;
+              padding-left: 10px;
+            }
+          }
+          tbody {
+            width: 100%;
+            height: 90%;
+            line-height: 2.5rem;
+
+            tr {
+              display: flex;
+              align-items: center;
+              text-align: left;
+              padding-left: 10px;
+              width: 100%;
+              height: 15%;
+              border-bottom: 1px solid black;
+
+              th {
+                font-weight: 500;
+                font-size: 1.1rem;
+                max-height: 2rem;
+              }
+
+              td {
+                position: relative;
+                font-size: 0.9rem;
+                font-weight: 400;
+                height: 40px;
+
+                img {
+                  width: 25px;
+                  height: 25px;
+                }
+              }
+
+              .nameCol {
+                width: 45%;
+                font-weight: bold;
+
+                &:hover {
+                  cursor: pointer;
+                  color: #cacaca;
+                  text-decoration: underline;
+                  text-underline-offset: 0.2rem;
+                }
+              }
+
+              .typeCol {
+                display: flex;
+                align-items: center;
+                vertical-align: text-top;
+                width: 10%;
+              }
+
+              .splitCol {
+                text-align: center;
+                width: 10%;
+
+                img {
+                  image-rendering: pixelated;
+                  position: absolute;
+                  top: 54%;
+                  transform: translate(-50%, -50%);
+                }
+              }
+
+              .powerCol {
+                width: 15%;
+                text-align: center;
+              }
+
+              .accuracyCol {
+                width: 10%;
+              }
+
+              .ppCol {
+                width: 10%;
+              }
+
+              .descriptionCol {
+                width: 40%;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .tBuilder-rosterContainer {
+    display: block;
+    width: 75%;
+    height: 100%;
+    border: 1px solid white;
+    border-radius: 20px;
+
+    .roster-header {
+      width: 100%;
+      height: 20%;
+      border: 1px solid blue;
+
+      .header-title {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 50%;
+        font-size: 2rem;
+        font-weight: 300;
+      }
+
+      .header-search {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 50%;
+        width: 100%;
+
+        .searchHandlerContainer {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          height: 100%;
+          width: 100%;
+
+          .searchBarContainer {
+            display: flex;
+            position: relative;
+            height: 30px;
+            width: 200px;
+            margin: 30px 0;
+
+            .inputField {
+              width: 300px;
+              height: 30px;
+              text-align: center;
+              border-radius: 10px;
+              color: black;
+            }
+
+            .suggestionsList {
+              position: absolute;
+              top: 100%;
+              left: 0;
+              width: 100%;
+              height: fit-content;
+              border: 1px solid #ccc;
+              border-top: none;
+              border-radius: 0 0 10px 10px;
+              padding: 0;
+              margin: 0;
+              list-style: none;
+            }
+
+            .suggestionItem {
+              padding: 5px 10px;
+              cursor: pointer;
+              background-color: #13131398;
+            }
+
+            .suggestionItem:hover,
+            .suggestionItem.selected {
+              background-color: #23232366;
+            }
+          }
+
+          .slotContainer {
+            position: relative;
+            width: 250px;
+            height: 30px;
+            border: 1px solid white;
+            margin-left: 10px;
+
+            .slot-header {
+              position: relative;
+              display: flex;
+              align-items: center;
+              justify-content: space-evenly;
+              width: 100%;
+              height: 100%;
+            }
+          }
+
+          .addButton {
+            width: 30px;
+            height: 30px;
+            margin-left: 10px;
+            border: 1px solid #cacaca;
+            background-color: transparent;
+          }
+        }
+      }
+    }
+
+    .tBuilder-body {
+      display: flex;
+      width: 100%;
+      height: 70%;
+      border: 1px solid red;
+
+      .rosterTableContainer {
+        display: flex;
+        height: 90%;
+        width: 100%;
+
+        .rosterTable {
+          margin-top: 40px;
+          display: grid;
+          grid-template-columns: 1fr 1fr 1fr;
+          grid-template-rows: 1fr 1fr;
+          gap: 10px;
+          width: 100%;
+          height: 100%;
+          padding: 1rem;
+
+          .pokemonCard {
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #cacaca;
+            border-radius: 15px;
+
+            .baseStats {
+              display: flex;
+              flex-direction: column;
+            }
+          }
+        }
+      }
+    }
+  }
+}
