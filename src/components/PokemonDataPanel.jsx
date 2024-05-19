@@ -236,7 +236,6 @@ const PokemonDataPanel = ({ setMainTypeColor }) => {
     data,
     abilities,
     innates,
-    setDisplayedPage,
     handleAbilityChange,
     nameRegex,
     handlePokemonClick,
@@ -295,7 +294,6 @@ const PokemonDataPanel = ({ setMainTypeColor }) => {
                   <Abilities
                     abilities={innates}
                     data={data}
-                    setDisplayedPage={setDisplayedPage}
                     handleAbilityChange={handleAbilityChange}
                     type1Color={type1Color}
                   />

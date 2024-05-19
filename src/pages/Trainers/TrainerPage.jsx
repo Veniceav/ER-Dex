@@ -1,6 +1,8 @@
 import React, { useContext, useState, useMemo, useEffect } from "react";
-import "../css/TrainerPage.css";
-import { DataContext } from "../data/DataContext";
+
+import { DataContext } from "../../data/DataContext";
+
+import "./TrainerPage.scss";
 
 const TrainerPage = () => {
   const {
@@ -277,14 +279,14 @@ const TrainerPage = () => {
                         </div>
                         <div className="pokemonType">
                           <img
-                            src={require(`../assets/icons/types/${pokemon.type[0]}.png`)}
+                            src={require(`../../assets/icons/types/${pokemon.type[0]}.png`)}
                             alt={pokemon.type[0]}
                           ></img>
                           {pokemon.type[1] == pokemon.type[0] ? (
                             ""
                           ) : (
                             <img
-                              src={require(`../assets/icons/types/${pokemon.type[1]}.png`)}
+                              src={require(`../../assets/icons/types/${pokemon.type[1]}.png`)}
                               alt={pokemon.type[1]}
                             ></img>
                           )}
@@ -295,7 +297,7 @@ const TrainerPage = () => {
                           <div className="pokemonIcon">
                             <img
                               onClick={() => handlePokemonClick(pokemon.name)}
-                              src={require(`../assets/icons/sprites/${nameRegex(
+                              src={require(`../../assets/icons/sprites/${nameRegex(
                                 pokemon.name
                               )}.png`)}
                               alt={pokemon.name}
@@ -415,4 +417,6 @@ const TrainerPage = () => {
   );
 };
 
-export default TrainerPage;
+export {
+  TrainerPage
+};

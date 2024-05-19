@@ -1,0 +1,5 @@
+export * from "./Pokemon/PokemonPage"
+export * from "./Moves/MovesPage"
+export * from "./Abilities/AbilitiesPage"
+export * from "./Trainers/TrainerPage"
+export * from "./TeamBuilder/TeamBuilderPage"

@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useContext, useMemo } from "react";
-import "../css/TeamBuilder.css";
-import { DataContext } from "../data/DataContext";
+
+import { DataContext } from "../../data/DataContext";
+
+import "./TeamBuilderPage.scss";
 
 const SearchHandler = ({
   searchValue,
@@ -446,7 +448,7 @@ const TeamBuilder = () => {
                       <td className="nameCol">{move.name}</td>
                       <td className="typeCol">
                         <img
-                          src={require(`../assets/icons/types/${moveType}.png`)}
+                          src={require(`../../assets/icons/types/${moveType}.png`)}
                           alt={moveType}
                         />
                       </td>
@@ -455,7 +457,7 @@ const TeamBuilder = () => {
                           moveSplit
                         ) && (
                           <img
-                            src={require(`../assets/icons/${moveSplit}.png`)}
+                            src={require(`../../assets/icons/${moveSplit}.png`)}
                             alt={moveSplit}
                           />
                         )}
@@ -481,7 +483,7 @@ const TeamBuilder = () => {
               {selectedPokemonData.types[1] === selectedPokemonData.types[0] ? (
                 <div className="card-types">
                   <img
-                    src={require(`../assets/icons/types/${selectedPokemonData.types[0]}.png`)}
+                    src={require(`../../assets/icons/types/${selectedPokemonData.types[0]}.png`)}
                     alt={selectedPokemonData.types[0]}
                   />
                 </div>
@@ -490,7 +492,7 @@ const TeamBuilder = () => {
                   {selectedPokemonData.types.map((type) => {
                     return (
                       <img
-                        src={require(`../assets/icons/types/${type}.png`)}
+                        src={require(`../../assets/icons/types/${type}.png`)}
                         alt={type}
                       />
                     );
@@ -516,7 +518,7 @@ const TeamBuilder = () => {
             </div>
             <div className="card-Icon">
               <img
-                src={require(`../assets/icons/sprites/${nameRegex(
+                src={require(`../../assets/icons/sprites/${nameRegex(
                   selectedPokemonData.name
                 )}.png`)}
                 alt={selectedPokemonData.name}
@@ -654,4 +656,6 @@ const TeamBuilder = () => {
   );
 };
 
-export default TeamBuilder;
+export {
+  TeamBuilder
+};

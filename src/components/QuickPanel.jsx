@@ -1,44 +1,39 @@
-import React, { useContext } from "react";
+import { Link } from "react-router-dom"
+
 import "../css/QuickPanel.css";
-import { DataContext } from "../data/DataContext";
 
-const RosterSlot = (props) => {
-  return <div className="rosterSlot">{props.children}</div>;
-};
-
-function QuickPanel({ mainTypeColor }) {
-  const { setDisplayedPage } = useContext(DataContext);
+function QuickPanel() {
   return (
     <div className="panelContainer">
       <div className="tabContainer">
         <div className="tabList">
-          <div
+          <Link
             className="pokemon tab"
-            onClick={() => setDisplayedPage("Pokemon")}
+            to="pokemon"
           >
             Pokemon
-          </div>
-          <div
+          </Link>
+          <Link
             className="Abilities tab"
-            onClick={() => setDisplayedPage("Abilities")}
+            to="abilities"
           >
             Abilities
-          </div>
-          <div className="Moves tab" onClick={() => setDisplayedPage("Moves")}>
+          </Link>
+          <Link className="Moves tab" to="moves">
             Moves
-          </div>
-          <div
+          </Link>
+          <Link
             className="trainers tab"
-            onClick={() => setDisplayedPage("Trainers")}
+            to="trainers"
           >
             Trainers
-          </div>
-          <div
+          </Link>
+          <Link
             className="teamBuilder tab"
-            onClick={() => setDisplayedPage("TBuilder")}
+            to="team-builder"
           >
             Team Builder
-          </div>
+          </Link>
         </div>
       </div>
     </div>

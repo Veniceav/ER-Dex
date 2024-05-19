@@ -121,9 +121,18 @@
         td {
           text-align: left;
           font-size: 1.1rem;
-          border-bottom: 1px solid black;
-          border-right: 1px solid black;
+          border: 1px solid black;
           padding-left: 1rem;
+         
+        }
+
+        .pokemonNameHeader {
+          flex: 1;
+          padding-right: 16px;
+        }
+
+        .moveLearnTypeHeader {
+          padding-right: 16px;
         }
 
         .icons {
@@ -146,9 +155,12 @@
         }
 
         .pokemonName {
+          flex: 1;
         }
 
         .moveLearnType {
+          margin-left: auto;
+          padding-right: 16px;
         }
 
         .pokemonName:hover {
