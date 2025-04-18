@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from "react";
+
 import { DataContext } from "./DataContext";
-import gameData from "../gameData";
+import gameData from "../libs/data/gameData";
 
 const PokemonDataProvider = ({ children }) => {
   const [searchValue, setSearchValue] = useState("");
   const [filteredData, setFilteredData] = useState(null);
+  const [filteredPokemon, setFilteredPokemon] = useState([]);
+  const [filteredPokemonMoves, setFilteredPokemonMoves] = useState([]);
+
   const [name, setName] = useState("");
   const [types, setTypes] = useState([]);
   const [abilities, setAbilities] = useState([]);
@@ -15,15 +19,23 @@ const PokemonDataProvider = ({ children }) => {
   const [eggMoves, setEggMoves] = useState([]);
   const [tmHmMoves, setTmHmMoves] = useState([]);
   const [tutorMoves, setTutorMoves] = useState([]);
+
+  // main page router
   const [displayedPage, setDisplayedPage] = useState("Pokemon");
+
+  // ability page info
   const [abilityTitle, setAbilityTitle] = useState("");
   const [abilityDescription, setAbilityDescription] = useState("");
+
+  // move page info
   const [moveTitle, setMoveTitle] = useState("");
   const [moveDescription, setMoveDescription] = useState("");
-  const [filteredPokemon, setFilteredPokemon] = useState([]);
-  const [filteredPokemonMoves, setFilteredPokemonMoves] = useState([]);
+
+  // trainer page info
   const [selectedTrainer, setSelectedTrainer] = useState([]);
   const [currentParty, setCurrentParty] = useState([]);
+
+  const [themeColor, setThemeColor] = useState(null)
 
   const nameRegex = (name) => {
     let fixedName = name
@@ -203,6 +215,8 @@ const PokemonDataProvider = ({ children }) => {
   };
 
   const providerState = {
+    themeColor,
+    setThemeColor,
     searchValue,
     setSearchValue,
     displayedPage,

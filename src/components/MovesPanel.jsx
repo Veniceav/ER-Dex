@@ -1,6 +1,7 @@
 import React, { useContext, useState, useMemo } from "react";
 import "../css/MovesPanel.css";
 import { DataContext } from "../data/DataContext";
+import { Link } from "react-router-dom";
 
 const MovesPanel = ({ mainTypeColor }) => {
   const [toggleState, setToggleState] = useState(1);
@@ -95,12 +96,14 @@ const MovesPanel = ({ mainTypeColor }) => {
 
               return (
                 <tr key={index} className="tableRow">
-                  <td
-                    className="nameCol"
-                    onClick={() => handleMoveChange(val.name)}
-                  >
-                    {val.name}
-                  </td>
+                  <Link to={`/moves/${val.name}`}>
+                    <td
+                      className="nameCol"
+                      onClick={() => handleMoveChange(val.name)}
+                    >
+                      {val.name}
+                    </td>
+                  </Link>
                   {toggleState === 1 && (
                     <td className="levelCol">{levelUpLearned}</td>
                   )}

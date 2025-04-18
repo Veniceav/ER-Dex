@@ -1,6 +1,8 @@
 import React, { useContext } from "react";
-import "../css/AbilitiesPage.css";
-import { DataContext } from "../data/DataContext";
+
+import { DataContext } from "../../data/DataContext";
+
+import "./AbilitiesPage.scss";
 
 const AbilityList = ({ abilityNames, handleTitleChange }) => {
   const abilityListSorted = abilityNames.toSorted();
@@ -44,7 +46,7 @@ const AbilityData = ({
       <tr key={index}>
         <td className="icons" onClick={() => handlePokemonClick(name)}>
           <img
-            src={require(`../assets/icons/sprites/${nameRegex(name)}.png`)}
+            src={require(`../../assets/icons/sprites/${nameRegex(name)}.png`)}
             alt={name}
           />
         </td>
@@ -104,7 +106,6 @@ const AbilityData = ({
 const AbilitiesPage = () => {
   const {
     setSearchValue,
-    setDisplayedPage,
     handleAbilityChange,
     abilityNames,
     handleTitleChange,
@@ -126,7 +127,6 @@ const AbilitiesPage = () => {
         abilityNames={abilityNames}
         abilityTitle={abilityTitle}
         abilityDescription={abilityDescription}
-        setDisplayedPage={setDisplayedPage}
         setSearchValue={setSearchValue}
         handleAbilityChange={handleAbilityChange}
         filteredPokemon={filteredPokemon}
@@ -136,4 +136,6 @@ const AbilitiesPage = () => {
   );
 };
 
-export default AbilitiesPage;
+export {
+  AbilitiesPage
+};
